@@ -17,5 +17,5 @@ RUN chmod +x /docker-entrypoint.sh
 # Set entrypoint
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-# Default command (just n8n, not n8n start)
-CMD ["n8n"]
+# Default command (n8n start)
+CMD ["n8n", "start"]

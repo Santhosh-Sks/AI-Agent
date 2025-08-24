@@ -1,0 +1,14 @@
+# Use the official n8n image
+FROM n8nio/n8n:latest
+
+# Copy importable workflows into the image
+COPY import /import
+
+# Copy custom nodes directory (will create directory if it doesn't exist)
+COPY custom-nodes /data/custom-nodes
+
+# Set the data directory (works with or without a mounted disk)
+ENV N8N_USER_FOLDER=/data
+
+# The official n8n image already has the correct ENTRYPOINT and CMD
+# No custom entrypoint needed
