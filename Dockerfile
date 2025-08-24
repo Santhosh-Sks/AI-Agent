@@ -1,16 +1,24 @@
-# Use the official n8n image as base
+# Use the official n8n base image
 FROM n8nio/n8n:latest
 
-# Copy importable workflows into the image
+# Copy workflows (if you have prebuilt importable JSONs)
 COPY import /import
 
-# Copy custom nodes (if any)
+# Copy custom nodes (optional)
 COPY custom-nodes /data/custom-nodes
 
-# Set n8n data directory
+# Copy custom entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Set the n8n user folder
 ENV N8N_USER_FOLDER=/data
 
-# Run n8n via node and ignore any additional arguments passed by the platform
-ENTRYPOINT ["sh", "-c", "exec node /usr/local/lib/node_modules/n8n/bin/n8n"]
+# Use our entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
+# Expose n8n default port
+EXPOSE 5678
 
+# Default command
+CMD ["n8n", "start"]

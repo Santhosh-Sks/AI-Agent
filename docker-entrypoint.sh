@@ -1,20 +1,12 @@
 #!/bin/sh
 set -e
 
-# Ensure data directory exists
-mkdir -p /data
+echo ">>> Starting n8n with environment: $N8N_USER_FOLDER"
 
-echo "Starting n8n..."
-
-# Import workflows on first run (optional)
-if [ -d "/import/workflows" ] && [ "$(ls -A /import/workflows 2>/dev/null)" ]; then
-  echo "Found workflows to import..."
-  for wf in /import/workflows/*.json; do
-    if [ -f "$wf" ]; then
-      echo "Found workflow: $wf"
-    fi
-  done
+# Run any pre-start logic (imports, migrations, etc.)
+if [ -d "/import" ]; then
+  echo ">>> Importing workflows from /import"
+  n8n import:workflow --input=/import/*.json || true
 fi
 
-# Use the original n8n entrypoint
-exec /usr/local/bin/docker-entrypoint.sh "$@"
+exec "$@"
