@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Ensure folders exist
+# Ensure data directory exists
 mkdir -p /data
 
 echo "Starting n8n..."
@@ -12,10 +12,9 @@ if [ -d "/import/workflows" ] && [ "$(ls -A /import/workflows 2>/dev/null)" ]; t
   for wf in /import/workflows/*.json; do
     if [ -f "$wf" ]; then
       echo "Found workflow: $wf"
-      # We'll import these after n8n starts
     fi
   done
 fi
 
-# Start n8n directly
-exec n8n
+# Use the original n8n entrypoint
+exec /usr/local/bin/docker-entrypoint.sh "$@"
