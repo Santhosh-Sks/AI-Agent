@@ -7,9 +7,8 @@ COPY import /import
 # Copy custom nodes (optional)
 COPY custom-nodes /data/custom-nodes
 
-# Copy custom entrypoint script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+# Copy custom entrypoint script with executable permissions
+COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
 # Set the n8n user folder
 ENV N8N_USER_FOLDER=/data
@@ -20,5 +19,5 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 # Expose n8n default port
 EXPOSE 5678
 
-# Default command
-CMD ["n8n", "start"]
+# Default command (n8n CLI uses no 'start' subcommand)
+CMD ["n8n"]
