@@ -7,9 +7,8 @@ COPY import /import
 # Copy custom nodes (optional)
 COPY custom-nodes /data/custom-nodes
 
-# Copy custom entrypoint script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+# Copy custom entrypoint script with permissions
+COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
 # Set persistent data directory
 ENV N8N_USER_FOLDER=/data
