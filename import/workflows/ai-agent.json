@@ -1,0 +1,14 @@
+{
+  "name": "AI Agent Example Workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [250, 300]
+    }
+  ],
+  "connections": {}
+}
