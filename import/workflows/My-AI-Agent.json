@@ -1,0 +1,139 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-agentassistant",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1616,
+        -32
+      ],
+      "id": "bfc97ba1-eb0f-4df4-a8eb-d20b0b2be4b1",
+      "name": "Webhook",
+      "webhookId": "f9e1e735-0bd8-40f5-86f9-b3fb8c69046f"
+    },
+    {
+      "parameters": {
+        "url": "https://ai-agentassistant.atlassian.net/rest/api/3/issue/MBA-1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1408,
+        -32
+      ],
+      "id": "3201a00b-c3a4-4e01-9520-056b71a1a8d0",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "MDJJOHS718PcdExq",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  issueKey: $json[\"key\"],\n  summary: $json[\"fields\"][\"summary\"],\n  status: $json[\"fields\"][\"status\"][\"name\"],\n  issueType: $json[\"fields\"][\"issuetype\"][\"name\"],\n  priority: $json[\"fields\"][\"priority\"][\"name\"],\n  description: $json[\"fields\"][\"description\"][\"content\"][0][\"content\"][0][\"text\"],\n  reporter: $json[\"fields\"][\"reporter\"][\"displayName\"],\n  reporterEmail: $json[\"fields\"][\"reporter\"][\"emailAddress\"],\n  dueDate: $json[\"fields\"][\"duedate\"],\n  assignee: $json[\"fields\"][\"assignee\"] ? $json[\"fields\"][\"assignee\"][\"displayName\"] : \"Unassigned\"\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        -32
+      ],
+      "id": "2b57dfa3-cc1a-4eb1-bc31-b7148a4081df",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -992,
+        -32
+      ],
+      "id": "76dbeef8-52e4-41b6-b6f5-eed485dff82d",
+      "name": "Send a message",
+      "webhookId": "9b745fd3-50a7-4d83-8e1a-8755ef66c456",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "ByzvuXyrVJjVLvFS",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a41192ed-86fa-4f3a-ad98-a823125a876e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa49a2806e9f5ac2b25f9ce354cb9e6b83a0361df8ecee81a0ee9df590c8f6e5"
+  },
+  "id": "wdrj1CfsyxFprCAi",
+  "tags": []
+}
