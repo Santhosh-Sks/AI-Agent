@@ -12,5 +12,5 @@ ENV N8N_USER_FOLDER=/data
 
 # The default n8n image already has the correct entrypoint
 # We'll let it handle startup normally
-# Add a fallback CMD so the container runs the correct n8n command if the platform doesn't override it
-CMD ["n8n"]
+# Add a fallback CMD with full path to n8n binary so the container runs correctly if platform doesn't override it
+CMD ["/usr/local/bin/n8n"]
