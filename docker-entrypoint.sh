@@ -8,6 +8,12 @@ set -e
 if ! mkdir -p "$N8N_USER_FOLDER" 2>/dev/null; then
   echo "Warning: cannot create or write to configured N8N_USER_FOLDER '$N8N_USER_FOLDER'. Falling back to /usr/local/data"
   N8N_USER_FOLDER=/usr/local/data
+fi
+
+# If /usr/local/data is not writable, fall back to /tmp/n8n
+if ! mkdir -p "$N8N_USER_FOLDER" 2>/dev/null; then
+  echo "Warning: /usr/local/data not writable. Falling back to /tmp/n8n"
+  N8N_USER_FOLDER=/tmp/n8n
   mkdir -p "$N8N_USER_FOLDER"
 fi
 
