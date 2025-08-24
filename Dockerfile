@@ -7,8 +7,7 @@ FROM n8nio/n8n:latest
 # Copy importable workflows into the image
 COPY import /import
 
-# Create custom-nodes directory and copy if exists
-RUN mkdir -p /data/custom-nodes
+# Copy custom nodes directory (will create directory if it doesn't exist)
 COPY custom-nodes /data/custom-nodes
 
 # Copy our entrypoint that will import workflows on first boot
