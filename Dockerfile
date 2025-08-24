@@ -11,8 +11,7 @@ COPY import /import
 COPY custom-nodes /data/custom-nodes
 
 # Copy our entrypoint that will import workflows on first boot
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
 # Set the data directory (works with or without a mounted disk)
 ENV N8N_USER_FOLDER=/data
