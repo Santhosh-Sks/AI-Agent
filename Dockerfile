@@ -1,24 +1,15 @@
 # Use the official n8n image
 FROM n8nio/n8n:latest
 
-# Create a data directory for workflows, nodes, and configs
-RUN mkdir -p /data/custom-nodes /data/import
+# Use a writable data folder (avoid creating /data at build time)
+ENV N8N_USER_FOLDER=/usr/local/data
 
-# Copy importable workflows into the image (optional)
-COPY import /data/import
+# Copy importable workflows and custom nodes into the writable data folder
+COPY import ${N8N_USER_FOLDER}/import
+COPY custom-nodes ${N8N_USER_FOLDER}/custom-nodes
 
-# Copy custom nodes into the image (optional)
-COPY custom-nodes /data/custom-nodes
-
-# Add a placeholder file to custom-nodes to avoid checksum errors
-RUN mkdir -p /custom-nodes && echo "Placeholder file" > /custom-nodes/README.md
-
-# Copy entrypoint script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-
-# Set n8n data folder
-ENV N8N_USER_FOLDER=/data
+# Copy entrypoint script with permissions (set at copy time to avoid chmod errors)
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 # Use our entrypoint script
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
