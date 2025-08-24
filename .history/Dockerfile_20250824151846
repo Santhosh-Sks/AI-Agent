@@ -1,0 +1,20 @@
+# Use official n8n image
+FROM n8nio/n8n:latest
+
+# Create data directory
+RUN mkdir -p /data
+
+# Copy importable workflows (if any)
+COPY import /import
+
+# Copy custom nodes
+COPY custom-nodes /data/custom-nodes
+
+# Set environment variable for n8n user data
+ENV N8N_USER_FOLDER=/data
+
+# Copy custom entrypoint
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
