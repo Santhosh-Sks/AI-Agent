@@ -4,12 +4,12 @@ FROM n8nio/n8n:latest
 # (Optional) Install extra OS packages if your custom nodes need them
 # RUN apk add --no-cache ...   # for alpine
 
-# Copy importable workflows into the image
+# Copy importable workflows and optional custom nodes into the image
 COPY import /import
 
-# Create custom-nodes directory and copy if exists
+# Create custom-nodes directory and copy any custom nodes if they exist
 RUN mkdir -p /data/custom-nodes
-COPY custom-nodes /data/custom-nodes
+COPY custom-nodes/* /data/custom-nodes/ 2>/dev/null || true
 
 # Copy our entrypoint that will import workflows on first boot
 COPY docker-entrypoint.sh /docker-entrypoint.sh
